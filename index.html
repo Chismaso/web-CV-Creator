@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ismael Pallol Karachtit – CV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/dom-to-image-more@3.4.0/dist/dom-to-image-more.min.js"></script>
+</head>
+<body>
+
+  <!-- ===== TOP BAR ===== -->
+  <div class="pdf-bar">
+    <button class="pdf-btn" onclick="window.print()">
+      <i class="fa-solid fa-file-pdf"></i>
+      Descargar PDF
+    </button>
+    <button class="pdf-btn font-toggle-btn" onclick="toggleFontPanel()">
+      <i class="fa-solid fa-text-height"></i>
+      Tamaño de texto
+    </button>
+    <button class="pdf-btn edit-mode-btn" id="editBtn" onclick="toggleEditMode()">
+      <i class="fa-solid fa-pen-to-square"></i>
+      Editar texto
+    </button>
+    <button class="pdf-btn png-btn" id="pngBtn" onclick="downloadPNG()">
+      <i class="fa-solid fa-image"></i>
+      Descargar PNG
+    </button>
+  </div>
+
+  <!-- ===== FONT SIZE PANEL ===== -->
+  <div class="font-panel" id="fontPanel">
+    <div class="font-panel__header">
+      <span><i class="fa-solid fa-sliders"></i> Tamaño de caracteres</span>
+      <button class="font-panel__close" onclick="toggleFontPanel()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="font-panel__body">
+
+      <div class="font-row">
+        <label>Nombre principal</label>
+        <input type="range" min="20" max="52" step="1" data-var="--fs-name" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Subtítulo (cargo)</label>
+        <input type="range" min="9" max="20" step="0.5" data-var="--fs-subtitle" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Descripción / bio</label>
+        <input type="range" min="9" max="18" step="0.5" data-var="--fs-bio" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Títulos de sección</label>
+        <input type="range" min="9" max="18" step="0.5" data-var="--fs-section" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Títulos de entrada</label>
+        <input type="range" min="9" max="18" step="0.5" data-var="--fs-item-title" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Institución / empresa</label>
+        <input type="range" min="9" max="16" step="0.5" data-var="--fs-institution" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Texto general / listas</label>
+        <input type="range" min="9" max="16" step="0.5" data-var="--fs-body" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Fechas / ubicación</label>
+        <input type="range" min="8" max="14" step="0.5" data-var="--fs-meta" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Etiquetas (skills / intereses)</label>
+        <input type="range" min="8" max="16" step="0.5" data-var="--fs-tag" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Contacto (texto)</label>
+        <input type="range" min="8" max="16" step="0.5" data-var="--fs-contact" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Contacto (altura barra)</label>
+        <input type="range" min="4" max="22" step="1" data-var="--sp-contact-py" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-divider">Espaciado</div>
+
+      <div class="font-row">
+        <label>Encima del nombre</label>
+        <input type="range" min="8" max="50" step="1" data-var="--sp-header-pt" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Cargo → Bio (separación)</label>
+        <input type="range" min="2" max="24" step="1" data-var="--sp-subtitle-mb" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Nombre → Cargo (separación)</label>
+        <input type="range" min="2" max="16" step="1" data-var="--sp-subtitle-mt" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Debajo del bio (antes contacto)</label>
+        <input type="range" min="8" max="50" step="1" data-var="--sp-header-pb" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Debajo del contacto</label>
+        <input type="range" min="8" max="50" step="1" data-var="--sp-body-pt" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Entre secciones</label>
+        <input type="range" min="4" max="36" step="1" data-var="--sp-section-mb" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+      <div class="font-row">
+        <label>Entre entradas</label>
+        <input type="range" min="4" max="28" step="1" data-var="--sp-item-mb" oninput="applyFont(this)" />
+        <span class="font-val"></span>
+      </div>
+
+    </div>
+    <div class="font-panel__footer">
+      <button onclick="resetFonts()"><i class="fa-solid fa-rotate-left"></i> Restablecer</button>
+    </div>
+  </div>
+
+  <script>
+    // Default values (px)
+    const DEFAULTS = {
+      // Font sizes
+      '--fs-name':             34,
+      '--fs-subtitle':         12.5,
+      '--fs-bio':              13,
+      '--fs-section':          13,
+      '--fs-item-title':       13.5,
+      '--fs-institution':      13,
+      '--fs-body':             13,
+      '--fs-meta':             12,
+      '--fs-tag':              12,
+      '--fs-contact':          12.5,
+      // Spacing tokens
+      '--sp-header-pt':        30,
+      '--sp-header-pb':        22,
+      '--sp-header-gap':       24,
+      '--sp-contact-py':       11,
+      '--sp-subtitle-mt':       5,
+      '--sp-subtitle-mb':      11,
+      '--sp-body-pt':          22,
+      '--sp-body-pb':          28,
+      '--sp-col-gap':          28,
+      '--sp-section-mb':       16,
+      '--sp-section-title-mb': 11,
+      '--sp-item-mb':          12,
+    };
+
+    const root = document.documentElement;
+
+    function applyFont(input) {
+      const v = parseFloat(input.value);
+      const varName = input.dataset.var;
+      root.style.setProperty(varName, v + 'px');
+      input.closest('.font-row').querySelector('.font-val').textContent = v + 'px';
+      const saved = JSON.parse(localStorage.getItem('cv-fonts') || '{}');
+      saved[varName] = v;
+      localStorage.setItem('cv-fonts', JSON.stringify(saved));
+      clearTimeout(window._fitTimer);
+      window._fitTimer = setTimeout(autoFitA4, 80);
+    }
+
+    function syncSliders() {
+      document.querySelectorAll('.font-panel input[type=range]').forEach(input => {
+        const varName = input.dataset.var;
+        const saved = JSON.parse(localStorage.getItem('cv-fonts') || '{}');
+        const target = saved[varName] ?? DEFAULTS[varName];
+        input.value = target;
+        input.closest('.font-row').querySelector('.font-val').textContent = target + 'px';
+      });
+    }
+
+    function toggleFontPanel() {
+      const panel = document.getElementById('fontPanel');
+      panel.classList.toggle('font-panel--open');
+      if (panel.classList.contains('font-panel--open')) syncSliders();
+    }
+
+    function resetFonts() {
+      localStorage.removeItem('cv-fonts');
+      Object.entries(DEFAULTS).forEach(([k, v]) => root.style.setProperty(k, v + 'px'));
+      syncSliders();
+      setTimeout(autoFitA4, 80);
+    }
+
+    // Restore saved sizes on load
+    (function () {
+      const saved = JSON.parse(localStorage.getItem('cv-fonts') || '{}');
+      Object.entries(DEFAULTS).forEach(([k, v]) => {
+        root.style.setProperty(k, (saved[k] ?? v) + 'px');
+      });
+    })();
+
+    // ── CONTENT EDITING ──────────────────────────────────────────
+    const EDIT_SEL = [
+      '.header-name', '.header-subtitle', '.header-bio',
+      '.section-title', '.item-title', '.item-institution',
+      '.item-date', '.item-location', '.item-desc', '.item-label',
+      '.item-list li', '.language-name',
+      '.contact-item span'
+    ].join(', ');
+
+    // Version key — bump this to auto-discard stale localStorage data
+    const CONTENT_VER = 'v3';
+
+    let editMode = false;
+
+    function getEditables() {
+      return Array.from(document.querySelectorAll(EDIT_SEL));
+    }
+
+    function sanitizeHTML(str) {
+      return str
+        .replace(/<script[\s\S]*?<\/script>/gi, '')
+        .replace(/\bon\w+\s*=\s*["'][^"']*["']/gi, '')
+        .replace(/javascript\s*:/gi, '');
+    }
+
+    // Assign stable data-key to every editable element (based on selector + sibling index)
+    function assignKeys() {
+      const counts = {};
+      getEditables().forEach(el => {
+        // Build a key from the first matching class + its position among siblings of same class
+        const cls = Array.from(el.classList).find(c =>
+          ['header-name','header-subtitle','header-bio','section-title','item-title',
+           'item-institution','item-date','item-location','item-desc','item-label',
+           'language-name'].includes(c)
+        ) || (el.closest('.contact-item') ? 'contact-span' : el.tagName.toLowerCase());
+        counts[cls] = (counts[cls] || 0);
+        const key = cls + '__' + counts[cls];
+        counts[cls]++;
+        if (!el.dataset.key) el.dataset.key = key;
+      });
+    }
+
+    function persistContent() {
+      const data = {};
+      getEditables().forEach(el => {
+        if (el.dataset.key) data[el.dataset.key] = el.innerHTML;
+      });
+      localStorage.setItem('cv-content-' + CONTENT_VER, JSON.stringify(data));
+    }
+
+    function toggleEditMode() {
+      editMode = !editMode;
+      const btn = document.getElementById('editBtn');
+      document.body.classList.toggle('editing-mode', editMode);
+
+      getEditables().forEach((el) => {
+        if (editMode) {
+          el.setAttribute('contenteditable', 'true');
+        } else {
+          el.removeAttribute('contenteditable');
+        }
+      });
+
+      if (editMode) {
+        enableTagEditing();
+        enableSectionEditing();
+        enableContactDrag();
+        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar';
+        btn.classList.add('edit-mode-btn--active');
+      } else {
+        disableTagEditing();
+        disableSectionEditing();
+        disableContactDrag();
+        btn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Editar texto';
+        btn.classList.remove('edit-mode-btn--active');
+        persistContent();
+        setTimeout(autoFitA4, 80);
+      }
+    }
+
+    // ── CONTACT BAR DRAG-REORDER ──────────────────────────────────
+    let _dragSrc = null;
+
+    function enableContactDrag() {
+      const bar = document.querySelector('.contact-bar');
+      if (!bar) return;
+      bar.querySelectorAll('.contact-item').forEach(item => {
+        // inject handle if missing
+        if (!item.querySelector('.contact-drag-handle')) {
+          const handle = document.createElement('span');
+          handle.className = 'contact-drag-handle';
+          handle.innerHTML = '<i class="fa-solid fa-grip-vertical"></i>';
+          item.insertBefore(handle, item.firstChild);
+        }
+        item.setAttribute('draggable', 'true');
+        item.addEventListener('dragstart',  _cdDragStart);
+        item.addEventListener('dragend',    _cdDragEnd);
+        item.addEventListener('dragover',   _cdDragOver);
+        item.addEventListener('dragleave',  _cdDragLeave);
+        item.addEventListener('drop',       _cdDrop);
+      });
+    }
+
+    function disableContactDrag() {
+      const bar = document.querySelector('.contact-bar');
+      if (!bar) return;
+      bar.querySelectorAll('.contact-item').forEach(item => {
+        item.removeAttribute('draggable');
+        item.removeEventListener('dragstart',  _cdDragStart);
+        item.removeEventListener('dragend',    _cdDragEnd);
+        item.removeEventListener('dragover',   _cdDragOver);
+        item.removeEventListener('dragleave',  _cdDragLeave);
+        item.removeEventListener('drop',       _cdDrop);
+        const handle = item.querySelector('.contact-drag-handle');
+        if (handle) handle.remove();
+      });
+      persistContactOrder();
+    }
+
+    function _cdDragStart(e) {
+      _dragSrc = this;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', '');
+      setTimeout(() => this.classList.add('contact-item--dragging'), 0);
+    }
+
+    function _cdDragEnd() {
+      this.classList.remove('contact-item--dragging');
+      document.querySelectorAll('.contact-item--drag-over').forEach(el =>
+        el.classList.remove('contact-item--drag-over')
+      );
+      _dragSrc = null;
+    }
+
+    function _cdDragOver(e) {
+      if (!_dragSrc || _dragSrc === this) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      this.classList.add('contact-item--drag-over');
+    }
+
+    function _cdDragLeave() {
+      this.classList.remove('contact-item--drag-over');
+    }
+
+    function _cdDrop(e) {
+      e.preventDefault();
+      this.classList.remove('contact-item--drag-over');
+      if (!_dragSrc || _dragSrc === this) return;
+      const bar   = this.closest('.contact-bar');
+      const items = Array.from(bar.querySelectorAll('.contact-item'));
+      const srcIdx  = items.indexOf(_dragSrc);
+      const destIdx = items.indexOf(this);
+      if (srcIdx < destIdx) {
+        bar.insertBefore(_dragSrc, this.nextSibling);
+      } else {
+        bar.insertBefore(_dragSrc, this);
+      }
+      persistContactOrder();
+    }
+
+    function persistContactOrder() {
+      const bar = document.querySelector('.contact-bar');
+      if (!bar) return;
+      const order = Array.from(bar.querySelectorAll('.contact-item')).map(item => {
+        // store a copy of outerHTML without the handle and without draggable
+        const clone = item.cloneNode(true);
+        clone.removeAttribute('draggable');
+        clone.querySelectorAll('.contact-drag-handle').forEach(h => h.remove());
+        return clone.outerHTML;
+      });
+      localStorage.setItem('cv-contact-order', JSON.stringify(order));
+    }
+
+    function restoreContactOrder() {
+      const saved = JSON.parse(localStorage.getItem('cv-contact-order') || 'null');
+      if (!saved) return;
+      const bar = document.querySelector('.contact-bar');
+      if (!bar) return;
+      bar.innerHTML = '';
+      saved.forEach(html => {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        const el = tmp.firstElementChild;
+        if (el) bar.appendChild(el);
+      });
+    }
+
+    // ── TAG GROUP EDITING ─────────────────────────────────────────
+    const TAG_GROUP_IDS = ['tags-skills', 'tags-softskills', 'tags-intereses'];
+
+    function prepareTagForEdit(tag) {
+      if (tag.querySelector('.tag-text')) return;
+      const text = tag.textContent.trim();
+      tag.textContent = '';
+      const textSpan = document.createElement('span');
+      textSpan.className = 'tag-text';
+      textSpan.setAttribute('contenteditable', 'true');
+      textSpan.textContent = text;
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'tag-del';
+      del.innerHTML = '&times;';
+      del.onclick = function (e) {
+        e.stopPropagation();
+        tag.remove();
+        persistTags();
+      };
+      tag.appendChild(textSpan);
+      tag.appendChild(del);
+    }
+
+    function enableTagEditing() {
+      TAG_GROUP_IDS.forEach(id => {
+        const container = document.getElementById(id);
+        if (!container) return;
+        container.querySelectorAll('.tag').forEach(prepareTagForEdit);
+        if (container.querySelector('.tag-add-btn')) return;
+        const addBtn = document.createElement('button');
+        addBtn.type = 'button';
+        addBtn.className = 'tag-add-btn';
+        addBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Añadir';
+        addBtn.onclick = () => addTag(id);
+        container.appendChild(addBtn);
+      });
+    }
+
+    function disableTagEditing() {
+      TAG_GROUP_IDS.forEach(id => {
+        const container = document.getElementById(id);
+        if (!container) return;
+        container.querySelectorAll('.tag').forEach(tag => {
+          const textEl = tag.querySelector('.tag-text');
+          const text = textEl ? textEl.textContent.trim() : tag.textContent.trim();
+          tag.textContent = text; // strips children, leaves clean text
+        });
+        container.querySelectorAll('.tag-add-btn').forEach(b => b.remove());
+      });
+      persistTags();
+      setTimeout(autoFitA4, 80);
+    }
+
+    function addTag(groupId) {
+      const container = document.getElementById(groupId);
+      if (!container) return;
+      const tag = document.createElement('span');
+      tag.className = 'tag';
+      const textSpan = document.createElement('span');
+      textSpan.className = 'tag-text';
+      textSpan.setAttribute('contenteditable', 'true');
+      textSpan.textContent = 'Nueva entrada';
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'tag-del';
+      del.innerHTML = '&times;';
+      del.onclick = function (e) {
+        e.stopPropagation();
+        tag.remove();
+        persistTags();
+      };
+      tag.appendChild(textSpan);
+      tag.appendChild(del);
+      const addBtn = container.querySelector('.tag-add-btn');
+      container.insertBefore(tag, addBtn);
+      // Select all text so user can type immediately
+      textSpan.focus();
+      const range = document.createRange();
+      range.selectNodeContents(textSpan);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+
+    function persistTags() {
+      const tagsData = {};
+      TAG_GROUP_IDS.forEach(id => {
+        const container = document.getElementById(id);
+        if (!container) return;
+        tagsData[id] = Array.from(container.querySelectorAll('.tag')).map(tag => {
+          const textEl = tag.querySelector('.tag-text');
+          return (textEl ? textEl.textContent : tag.textContent).trim();
+        }).filter(t => t.length > 0);
+      });
+      localStorage.setItem('cv-tags', JSON.stringify(tagsData));
+    }
+
+    function restoreTags() {
+      const tagsData = JSON.parse(localStorage.getItem('cv-tags') || 'null');
+      if (!tagsData) return;
+      TAG_GROUP_IDS.forEach(id => {
+        const container = document.getElementById(id);
+        if (!container || !tagsData[id]) return;
+        container.querySelectorAll('.tag').forEach(t => t.remove());
+        tagsData[id].forEach(text => {
+          const tag = document.createElement('span');
+          tag.className = 'tag';
+          tag.textContent = text;
+          container.appendChild(tag);
+        });
+      });
+    }
+
+    // ── SECTION ITEM EDITING ──────────────────────────────────────
+    const SECTION_STORE = 'cv-sections-v1';
+
+    function enableSectionEditing() {
+      document.querySelectorAll('.cv-section[data-section]').forEach(sec => {
+        const type = sec.dataset.itemType;
+        const items = type === 'language'
+          ? sec.querySelectorAll('.language')
+          : sec.querySelectorAll('.cv-item');
+        items.forEach(item => injectItemDelBtn(item));
+        if (sec.querySelector('.item-add-btn')) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'item-add-btn';
+        btn.innerHTML = '<i class="fa-solid fa-plus"></i> Añadir entrada';
+        btn.onclick = () => addCvItem(sec);
+        sec.appendChild(btn);
+      });
+      enableLanguageBarEditing();
+    }
+
+    function disableSectionEditing() {
+      document.querySelectorAll('.cv-section[data-section]').forEach(sec => {
+        sec.querySelectorAll('.item-add-btn, .item-del-btn').forEach(b => b.remove());
+      });
+      disableLanguageBarEditing();
+      persistSections();
+    }
+
+    function injectItemDelBtn(item) {
+      if (item.querySelector('.item-del-btn')) return;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'item-del-btn';
+      btn.title = 'Eliminar entrada';
+      btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+      btn.onclick = function (e) {
+        e.stopPropagation();
+        item.remove();
+        persistSections();
+      };
+      item.appendChild(btn);
+    }
+
+    // ── LANGUAGE BARS ─────────────────────────────────────────────
+    function getLanguageLabel(val) {
+      val = Math.round(val);
+      if (val === 0) return 'Sin conocimiento';
+      if (val === 1) return 'Conocimientos básicos';
+      if (val === 2) return 'Conversación básica';
+      if (val === 3) return 'Nivel intermedio';
+      if (val === 4) return 'Nivel avanzado';
+      return 'Nivel nativo / experto';
+    }
+
+    function updateLangDots(langEl, val) {
+      val = Math.max(0, Math.min(5, Math.round(val)));
+      langEl.dataset.langValue = val;
+      langEl.querySelectorAll('.lang-dot').forEach((dot, i) => {
+        dot.classList.toggle('lang-dot--filled', i < val);
+      });
+      const label = langEl.querySelector('.lang-bar-label');
+      if (label) label.textContent = getLanguageLabel(val);
+    }
+
+    function initLangDots() {
+      document.querySelectorAll('.language[data-lang-value]').forEach(langEl => {
+        updateLangDots(langEl, parseInt(langEl.dataset.langValue) || 0);
+      });
+    }
+
+    function langDotClickHandler(e) {
+      const dot    = e.currentTarget;
+      const langEl = dot.closest('.language');
+      updateLangDots(langEl, parseInt(dot.dataset.dot));
+      persistSections();
+    }
+
+    function enableLanguageBarEditing() {
+      document.querySelectorAll('.language .lang-dots').forEach(dotsEl => {
+        dotsEl.classList.add('lang-dots--editable');
+        dotsEl.querySelectorAll('.lang-dot').forEach(dot => {
+          dot.removeEventListener('click', langDotClickHandler);
+          dot.addEventListener('click', langDotClickHandler);
+        });
+      });
+    }
+
+    function disableLanguageBarEditing() {
+      document.querySelectorAll('.language .lang-dots').forEach(dotsEl => {
+        dotsEl.classList.remove('lang-dots--editable');
+        dotsEl.querySelectorAll('.lang-dot').forEach(dot => {
+          dot.removeEventListener('click', langDotClickHandler);
+        });
+      });
+    }
+
+    // Migrate old language format (`.language-level` → bar) without losing other section data
+    function migrateLangBars() {
+      const sec = document.querySelector('.cv-section[data-section="idiomas"]');
+      if (!sec) return;
+      const langs = sec.querySelector('.languages');
+      if (!langs) return;
+      const needsMigration = Array.from(langs.querySelectorAll('.language')).some(
+        l => (l.querySelector('.language-level') || l.querySelector('.lang-bar-track')) && !l.querySelector('.lang-dots')
+      );
+      if (!needsMigration) return;
+      const oldItems = Array.from(langs.querySelectorAll('.language'));
+      langs.innerHTML = '';
+      oldItems.forEach(old => {
+        const nameText = old.querySelector('.language-name')?.textContent?.trim() || 'Idioma';
+        const newLang  = buildCvItem('language');
+        newLang.querySelector('.language-name').textContent = nameText;
+        langs.appendChild(newLang);
+      });
+      persistSections();
+      initLangDots();
+    }
+
+    function buildCvItem(type) {
+      if (type === 'language') {
+        const wrap = document.createElement('div');
+        wrap.className = 'language';
+        wrap.dataset.langValue = '5';
+        const name = document.createElement('span');
+        name.className = 'language-name';
+        name.textContent = 'Idioma';
+        const barCol = document.createElement('div');
+        barCol.className = 'lang-bar-col';
+        const dotsEl = document.createElement('div');
+        dotsEl.className = 'lang-dots';
+        for (let i = 1; i <= 5; i++) {
+          const d = document.createElement('span');
+          d.className = 'lang-dot' + (i <= 3 ? ' lang-dot--filled' : '');
+          d.dataset.dot = i;
+          dotsEl.appendChild(d);
+        }
+        const label = document.createElement('span');
+        label.className = 'lang-bar-label';
+        label.textContent = getLanguageLabel(3);
+        barCol.appendChild(dotsEl);
+        barCol.appendChild(label);
+        wrap.appendChild(name);
+        wrap.appendChild(barCol);
+        return wrap;
+      }
+
+      const wrap = document.createElement('div');
+      wrap.className = 'cv-item';
+
+      const title = document.createElement('h3');
+      title.className = 'item-title';
+      title.textContent = type === 'work'     ? 'Cargo / Puesto'        :
+                          type === 'project'  ? 'Nombre del proyecto'   :
+                          type === 'training' ? 'Nombre del curso'      : 'Título de la formación';
+      wrap.appendChild(title);
+
+      if (type === 'full' || type === 'work') {
+        const inst = document.createElement('p');
+        inst.className = 'item-institution';
+        inst.textContent = type === 'work' ? 'Empresa' : 'Institución';
+        wrap.appendChild(inst);
+      }
+
+      const meta = document.createElement('div');
+      meta.className = 'item-meta';
+      const date = document.createElement('span');
+      date.className = 'item-date';
+      date.textContent = 'MM/AAAA – MM/AAAA';
+      meta.appendChild(date);
+      if (type === 'full' || type === 'work') {
+        const loc = document.createElement('span');
+        loc.className = 'item-location';
+        loc.textContent = 'Ubicación';
+        meta.appendChild(loc);
+      }
+      wrap.appendChild(meta);
+
+      if (type === 'work' || type === 'training') {
+        const desc = document.createElement('p');
+        desc.className = type === 'training' ? 'item-desc item-desc--italic' : 'item-desc';
+        desc.textContent = type === 'training' ? 'Descripción del curso.' : 'Descripción de la empresa.';
+        wrap.appendChild(desc);
+      }
+
+      if (type === 'full' || type === 'work') {
+        const label = document.createElement('p');
+        label.className = 'item-label';
+        label.textContent = type === 'work' ? 'Logros/Tareas' : 'Enfoque del programa';
+        wrap.appendChild(label);
+      }
+
+      if (type !== 'training') {
+        const ul = document.createElement('ul');
+        ul.className = 'item-list';
+        const li = document.createElement('li');
+        li.textContent = 'Descripción detallada.';
+        ul.appendChild(li);
+        wrap.appendChild(ul);
+      }
+
+      return wrap;
+    }
+
+    function addCvItem(sec) {
+      const type = sec.dataset.itemType;
+      const item = buildCvItem(type);
+
+      if (type === 'language') {
+        // Only language-name is contenteditable; dots are click-driven
+        const nameEl = item.querySelector('.language-name');
+        if (nameEl) nameEl.setAttribute('contenteditable', 'true');
+        const dotsEl = item.querySelector('.lang-dots');
+        if (dotsEl) {
+          dotsEl.classList.add('lang-dots--editable');
+          dotsEl.querySelectorAll('.lang-dot').forEach(dot => {
+            dot.addEventListener('click', langDotClickHandler);
+          });
+        }
+        injectItemDelBtn(item);
+        sec.querySelector('.languages').appendChild(item);
+      } else {
+        // Make all editable children contenteditable immediately (we're in edit mode)
+        item.querySelectorAll('h3, p, span, li').forEach(el => el.setAttribute('contenteditable', 'true'));
+        injectItemDelBtn(item);
+        sec.insertBefore(item, sec.querySelector('.item-add-btn'));
+      }
+
+      assignKeys();
+      persistSections();
+      setTimeout(autoFitA4, 80);
+
+      // Focus first field and select all
+      const first = item.querySelector('[contenteditable]');
+      if (first) {
+        first.focus();
+        const range = document.createRange();
+        range.selectNodeContents(first);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    }
+
+    function persistSections() {
+      const data = {};
+      document.querySelectorAll('.cv-section[data-section]').forEach(sec => {
+        const clone = sec.cloneNode(true);
+        clone.querySelectorAll('.item-add-btn, .item-del-btn').forEach(b => b.remove());
+        data[sec.dataset.section] = clone.innerHTML;
+      });
+      localStorage.setItem(SECTION_STORE, JSON.stringify(data));
+    }
+
+    function restoreSections() {
+      const data = JSON.parse(localStorage.getItem(SECTION_STORE) || 'null');
+      if (!data) return false;
+      document.querySelectorAll('.cv-section[data-section]').forEach(sec => {
+        if (data[sec.dataset.section] !== undefined) {
+          sec.innerHTML = sanitizeHTML(data[sec.dataset.section]);
+        }
+      });
+      return true;
+    }
+
+    // Prevent Enter on single-line elements (headings, spans)
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.target.isContentEditable) {
+        const tag = e.target.tagName.toLowerCase();
+        if (['h1', 'h2', 'h3', 'span'].includes(tag)) e.preventDefault();
+      }
+    });
+
+    // Auto-save while typing (debounced)
+    document.addEventListener('input', function (e) {
+      if (e.target.isContentEditable) {
+        clearTimeout(window._saveTimer);
+        window._saveTimer = setTimeout(persistContent, 600);
+      }
+    });
+
+    // Restore saved text on page load
+    document.addEventListener('DOMContentLoaded', function () {
+      restoreContactOrder();
+      restoreSections();
+      migrateLangBars();
+      initLangDots();
+      restoreTags();
+      assignKeys();
+      ['cv-content', 'cv-content-v1', 'cv-content-v2'].forEach(k => localStorage.removeItem(k));
+      const data = JSON.parse(localStorage.getItem('cv-content-' + CONTENT_VER) || 'null');
+      if (data) {
+        getEditables().forEach(el => {
+          if (el.dataset.key && data[el.dataset.key] !== undefined) {
+            el.innerHTML = sanitizeHTML(data[el.dataset.key]);
+          }
+        });
+      }
+      // Auto-fit on load once fonts are ready
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => autoFitA4());
+      }
+      setTimeout(autoFitA4, 300);
+    });
+
+    // ── AUTO-FIT A4 ───────────────────────────────────────────────
+    const A4_H = 1123; // A4 height at 96 dpi
+
+    // Font vars — always rendered at exactly the user's target value
+    const FONT_VARS = [
+      '--fs-name','--fs-subtitle','--fs-bio','--fs-section','--fs-item-title',
+      '--fs-institution','--fs-body','--fs-meta','--fs-tag','--fs-contact'
+    ];
+    // Spacing vars — auto-reduced when content overflows A4
+    const SPACING_VARS = [
+      '--sp-header-pt','--sp-header-pb','--sp-header-gap','--sp-contact-py',
+      '--sp-subtitle-mt','--sp-subtitle-mb',
+      '--sp-body-pt','--sp-body-pb','--sp-col-gap',
+      '--sp-section-mb','--sp-section-title-mb','--sp-item-mb'
+    ];
+
+    function getTargetSize(varName) {
+      const saved = JSON.parse(localStorage.getItem('cv-fonts') || '{}');
+      return saved[varName] ?? DEFAULTS[varName];
+    }
+
+    function autoFitA4() {
+      const container = document.querySelector('.cv-container');
+      if (!container) return;
+
+      // 1. Fonts are always exactly what the user set — no auto-scaling of fonts
+      FONT_VARS.forEach(v => root.style.setProperty(v, getTargetSize(v) + 'px'));
+
+      // 2. Reset spacing to target values before measuring
+      SPACING_VARS.forEach(v => root.style.setProperty(v, getTargetSize(v) + 'px'));
+
+      // 3. Measure natural content height
+      container.style.height   = 'auto';
+      container.style.overflow = 'visible';
+      container.offsetHeight; // force reflow
+      const naturalH = container.scrollHeight;
+      container.style.height   = '';
+      container.style.overflow = '';
+
+      // 4. If overflow, reduce ONLY spacing proportionally — fonts stay untouched
+      if (naturalH > A4_H) {
+        const ratio = A4_H / naturalH;
+        SPACING_VARS.forEach(v => {
+          root.style.setProperty(v, (getTargetSize(v) * ratio) + 'px');
+        });
+      }
+    }
+
+    // ── PNG DOWNLOAD ─────────────────────────────────────────
+    function downloadPNG() {
+      if (typeof domtoimage === 'undefined') {
+        alert('dom-to-image no está disponible. Verifica tu conexión a internet.');
+        return;
+      }
+      const btn = document.getElementById('pngBtn');
+      const container = document.querySelector('.cv-container');
+
+      // Hide UI chrome
+      const hidden = document.querySelectorAll('.pdf-bar, .font-panel, .tag-del, .tag-add-btn, .a4-indicator');
+      hidden.forEach(el => el.style.visibility = 'hidden');
+      document.body.classList.add('capturing-png');
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generando...';
+
+      const scale = 2;
+      const w = container.offsetWidth;
+      const h = container.offsetHeight;
+
+      domtoimage.toPng(container, {
+        width:  w * scale,
+        height: h * scale,
+        style: {
+          transform: 'scale(' + scale + ')',
+          transformOrigin: 'top left',
+          width:  w + 'px',
+          height: h + 'px'
+        }
+      }).then(dataUrl => {
+        const link = document.createElement('a');
+        link.download = 'CV-Ismael-Pallol.png';
+        link.href = dataUrl;
+        link.click();
+      }).catch(err => {
+        alert('Error al generar PNG: ' + err.message);
+      }).finally(() => {
+        hidden.forEach(el => el.style.visibility = '');
+        document.body.classList.remove('capturing-png');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-image"></i> Descargar PNG';
+      });
+    }
+  </script>
+
+  <div class="cv-wrapper">
+    <div class="cv-container">
+
+      <!-- ===== HEADER ===== -->
+      <header class="cv-header">
+        <div class="header-photo">
+          <img src="img/foto cv profesional.png" alt="Ismael Pallol" />
+        </div>
+        <div class="header-content">
+          <h1 class="header-name">Ismael Pallol</h1>
+          <p class="header-subtitle">DISEÑADOR GRÁFICO Y DESARROLLADOR WEB</p>
+          <p class="header-bio">
+            Diseñador gráfico y desarrollador web con experiencia en diseño visual, UX/UI y desarrollo de aplicaciones.
+            Combino creatividad y pensamiento técnico para crear productos digitales funcionales, accesibles y visualmente
+            cuidados. Me caracterizo por mi capacidad para resolver problemas, aprender rápido y trabajar con enfoque en
+            resultados. Busco aportar valor creando experiencias que sean claras para el usuario y eficientes para el negocio.
+          </p>
+        </div>
+      </header>
+
+      <!-- ===== CONTACT BAR ===== -->
+      <div class="contact-bar">
+        <a href="mailto:pk_ismael@hotmail.com" class="contact-item">
+          <i class="fa-regular fa-envelope"></i>
+          <span>pk_ismael@hotmail.com</span>
+        </a>
+        <div class="contact-item">
+          <i class="fa-solid fa-phone"></i>
+          <span>696 339 629</span>
+        </div>
+        <div class="contact-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Madrid, España</span>
+        </div>
+        <a href="https://www.linkedin.com/in/ismaelpallolkarachtit/" target="_blank" rel="noopener" class="contact-item">
+          <i class="fa-brands fa-linkedin"></i>
+          <span>linkedin.com/in/ismaelpallolkarachtit</span>
+        </a>
+        <a href="https://github.com/Chismaso" target="_blank" rel="noopener" class="contact-item">
+          <i class="fa-brands fa-github"></i>
+          <span>github.com/Chismaso</span>
+        </a>
+      </div>
+
+      <!-- ===== BODY: TWO COLUMNS ===== -->
+      <div class="cv-body">
+
+        <!-- ── LEFT COLUMN ── -->
+        <main class="cv-col cv-col--left">
+
+          <!-- EDUCACIÓN -->
+          <section class="cv-section" data-section="educacion" data-item-type="full">
+            <h2 class="section-title">Educación</h2>
+
+            <div class="cv-item">
+              <h3 class="item-title">Ciclo Formativo de Grado Superior de Desarrollo de Aplicaciones Web</h3>
+              <p class="item-institution">The Core Entertainment Science School</p>
+              <div class="item-meta">
+                <span class="item-date">09/2023 – 01/2026</span>
+                <span class="item-location">Tres Cantos, Madrid</span>
+              </div>
+              <p class="item-label">Enfoque del programa</p>
+              <ul class="item-list">
+                <li>Formación enfocada en desarrollo web completo: frontend, backend, bases de datos, despliegue y diseño de interfaces con tecnologías modernas.</li>
+              </ul>
+            </div>
+
+            <div class="cv-item">
+              <h3 class="item-title">Ciclo Formativo de Grado Superior de Diseño y Edición de Publicaciones Impresas y Multimedia</h3>
+              <p class="item-institution">IES Islas Filipinas</p>
+              <div class="item-meta">
+                <span class="item-date">09/2016 – 06/2018</span>
+                <span class="item-location">Madrid</span>
+              </div>
+              <p class="item-label">Enfoque del programa</p>
+              <ul class="item-list">
+                <li>Formación en diseño visual y producción gráfica para medios impresos y digitales, incluyendo maquetación, tipografía y tratamiento de imágenes.</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- EXPERIENCIA LABORAL -->
+          <section class="cv-section" data-section="experiencia" data-item-type="work">
+            <h2 class="section-title">Experiencia Laboral</h2>
+
+            <div class="cv-item">
+              <h3 class="item-title">Desarrollador Full Stack (Prácticas DAW)</h3>
+              <p class="item-institution">The Core Entertainment Science School</p>
+              <div class="item-meta">
+                <span class="item-date">09/2025 – 01/2026</span>
+                <span class="item-location">Madrid</span>
+              </div>
+              <p class="item-desc">Escuela de formación especializada en tecnología, diseño y comunicación digital.</p>
+              <p class="item-label">Logros/Tareas</p>
+              <ul class="item-list">
+                <li>Durante mis prácticas diseñé y desarrollé una aplicación completa para la gestión de préstamos de material, participando en todo el proceso desde la ideación y el diseño UX/UI hasta la implementación del frontend y backend, la creación de la base de datos en Supabase y el despliegue final en producción.</li>
+              </ul>
+            </div>
+
+            <div class="cv-item">
+              <h3 class="item-title">Diseñador Gráfico y Operador (Prácticas Diseño y Edición de Publicaciones Impresas y Multimedia)</h3>
+              <p class="item-institution">PROMOSEDICOM</p>
+              <div class="item-meta">
+                <span class="item-date">01/2018 – 12/2018</span>
+                <span class="item-location">Alcobendas, Madrid</span>
+              </div>
+              <p class="item-desc">Empresa española dedicada a servicios publicitarios, marketing directo y creatividad.</p>
+              <p class="item-label">Logros/Tareas</p>
+              <ul class="item-list">
+                <li>Diseñador Gráfico y Operador en Edicom, realizando adaptación de diseños para productos personalizados y gestionando impresión y empaquetado con estándares de calidad.</li>
+              </ul>
+            </div>
+          </section>
+
+        </main>
+
+        <!-- ── RIGHT COLUMN ── -->
+        <aside class="cv-col cv-col--right">
+
+          <!-- SKILLS -->
+          <section class="cv-section">
+            <h2 class="section-title">Skills</h2>
+            <div class="tags" id="tags-skills">
+              <span class="tag">JavaScript · TypeScript</span>
+              <span class="tag">React</span>
+              <span class="tag">UX/UI</span>
+              <span class="tag">Figma</span>
+              <span class="tag">Adobe Photoshop · Illustrator</span>
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">Herramientas de IA para diseño y código</span>
+            </div>
+          </section>
+
+          <!-- SOFT SKILLS -->
+          <section class="cv-section">
+            <h2 class="section-title">Soft Skills</h2>
+            <div class="tags" id="tags-softskills">
+              <span class="tag">Comunicación clara</span>
+              <span class="tag">Pensamiento creativo</span>
+              <span class="tag">Resolución de problemas</span>
+              <span class="tag">Trabajo en equipo</span>
+              <span class="tag">Autonomía y capacidad de aprendizaje</span>
+            </div>
+          </section>
+
+          <!-- PROYECTOS PERSONALES -->
+          <section class="cv-section" data-section="proyectos" data-item-type="project">
+            <h2 class="section-title">Proyectos Personales</h2>
+            <div class="cv-item">
+              <h3 class="item-title">UnieRnt – Web de préstamo de material escolar</h3>
+              <div class="item-meta">
+                <span class="item-date">09/2025 – 01/2026</span>
+              </div>
+              <ul class="item-list">
+                <li>Proyecto full stack desarrollado como trabajo final, centrado en diseño UX/UI, arquitectura, modelado de base de datos en Supabase, seguridad con RLS y despliegue en Vercel. Incluye catálogo, sistema de reservas, panel administrativo y flujos completos de usuario.</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- FORMACIÓN COMPLEMENTARIA -->
+          <section class="cv-section" data-section="formacion" data-item-type="training">
+            <h2 class="section-title">Formación Complementaria</h2>
+            <div class="cv-item">
+              <h3 class="item-title">Diploma en Diseño Gráfico Multimedia &ndash; Deusto Formación</h3>
+              <div class="item-meta">
+                <span class="item-date">05/2015 – 05/2016</span>
+              </div>
+              <p class="item-desc item-desc--italic">200 horas &middot; Curso impartido por centro acreditado por Google (AdWords Seminar Leader) &middot; <br>
+                                                        Calificación: Sobresaliente</p>
+            </div>
+          </section>
+
+          <!-- IDIOMAS -->
+          <section class="cv-section" data-section="idiomas" data-item-type="language">
+            <h2 class="section-title">Idiomas</h2>
+            <div class="languages">
+              <div class="language" data-lang-value="5">
+                <span class="language-name">Español</span>
+                <div class="lang-bar-col">
+                  <div class="lang-dots">
+                    <span class="lang-dot lang-dot--filled" data-dot="1"></span>
+                    <span class="lang-dot lang-dot--filled" data-dot="2"></span>
+                    <span class="lang-dot lang-dot--filled" data-dot="3"></span>
+                    <span class="lang-dot lang-dot--filled" data-dot="4"></span>
+                    <span class="lang-dot lang-dot--filled" data-dot="5"></span>
+                  </div>
+                  <span class="lang-bar-label">Nivel nativo / experto</span>
+                </div>
+              </div>
+              <div class="language" data-lang-value="4">
+                <span class="language-name">Inglés</span>
+                <div class="lang-bar-col">
+                  <div class="lang-dots">
+                    <span class="lang-dot lang-dot--filled" data-dot="1"></span>
+                    <span class="lang-dot lang-dot--filled" data-dot="2"></span>
+                    <span class="lang-dot lang-dot--filled" data-dot="3"></span>
+                    <span class="lang-dot lang-dot--filled" data-dot="4"></span>
+                    <span class="lang-dot" data-dot="5"></span>
+                  </div>
+                  <span class="lang-bar-label">Nivel avanzado</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- INTERESES -->
+          <section class="cv-section">
+            <h2 class="section-title">Intereses</h2>
+            <div class="tags" id="tags-intereses">
+              <span class="tag">Creatividad visual</span>
+              <span class="tag">Diseño e ilustración</span>
+              <span class="tag">IA generativa</span>
+              <span class="tag">Nuevas tecnologías</span>
+              <span class="tag">Viajar</span>
+              <span class="tag">Skateboarding</span>
+            </div>
+          </section>
+
+        </aside>
+      </div><!-- /cv-body -->
+    </div><!-- /cv-container -->
+  </div><!-- /cv-wrapper -->
+</body>
+</html>
