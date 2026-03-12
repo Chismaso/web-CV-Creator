@@ -9,8 +9,10 @@
 
 ```
 cv-Ismael/
-├── index.html          ← Única página del CV
-├── styles.css          ← Todos los estilos
+├── index.html          ← Estructura semántica del CV (sin handlers inline)
+├── styles.css          ← Estilos base y layout
+├── app.js              ← Lógica principal y bindings de UI
+├── drag-sections.js    ← Reordenación drag & drop de secciones
 ├── img/
 │   └── foto cv profesional.png   ← Foto de perfil (NO renombrar)
 └── PROYECTO.md         ← Este archivo
@@ -119,12 +121,18 @@ Creatividad visual · Diseño e ilustración · IA generativa · Nuevas tecnolog
 
 ### Print / PDF A4
 - `@page { size: A4 portrait; margin: 0; }`
-- `.cv-container` se escala con `transform: scale(0.78)` para caber en un folio
+- `.cv-container` mantiene ancho A4 y puede crecer en alto
+- `.a4-indicator` marca visualmente el límite A4 (1123px) en pantalla
 - La barra de botones y controles de edición se ocultan al imprimir
 
 ---
 
 ## Funcionalidades JavaScript
+
+### Arquitectura actual
+- `app.js` contiene la lógica principal (edición, persistencia, foto, exportaciones, bindings de UI)
+- `drag-sections.js` contiene el sistema de arrastrar y soltar secciones
+- `index.html` ya no usa `onclick`, `onchange` ni `oninput`; los eventos se enlazan desde JS con `data-action`, `data-add-section` e IDs
 
 ### 1. Panel de tamaño de texto
 - Botón "Tamaño de texto" → abre panel flotante con sliders
@@ -133,7 +141,7 @@ Creatividad visual · Diseño e ilustración · IA generativa · Nuevas tecnolog
 - Botón "Restablecer" vuelve a los defaults
 
 ### 2. Modo edición de texto
-- Botón "Editar texto" (verde) → activa `contenteditable` en todos los elementos de texto
+- Botón "Editar CV" → activa `contenteditable` en todos los elementos de texto
 - Al guardar: elimina `contenteditable`, persiste contenido
 - **Sistema de claves estables** (`data-key`): basado en clase CSS + índice entre hermanos de la misma clase (ej. `section-title__0`). **NO usar índices posicionales globales** — causa corrupción de datos al cambiar el DOM
 - Versión activa del storage: **`cv-content-v3`** (al cambiar el DOM, incrementar la versión para descartar datos stale)
@@ -145,6 +153,13 @@ Creatividad visual · Diseño e ilustración · IA generativa · Nuevas tecnolog
 - IDs de los contenedores: `tags-skills`, `tags-softskills`, `tags-intereses`
 - Persiste en `localStorage` bajo clave `cv-tags`
 - Los botones × y + se ocultan al imprimir
+
+### 4. Reordenación inteligente de secciones (drag & drop)
+- Se activa solo en modo edición
+- Cada sección muestra un asa de arrastre y un placeholder de destino
+- Permite reordenar verticalmente y mover secciones entre columnas
+- Persistencia de layout en `localStorage` bajo clave `cv-layout-v1`
+- Se restaura automáticamente al cargar la página
 
 ---
 
